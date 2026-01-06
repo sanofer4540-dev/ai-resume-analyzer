@@ -63,8 +63,9 @@ def match(req: MatchRequest):
 
     sim = cosine_similarity(vectors[0], vectors[1])[0][0]
 
-        # Step 5: semantic similarity
+# Step 5: semantic similarity
     sem_sim = semantic_similarity(resume, job)
+
 
 
     # ---- tokenizer + normalization ----
@@ -324,6 +325,7 @@ def match(req: MatchRequest):
     "tfidf_score": float(round(sim * 100, 2)),
     "skill_coverage": float(round(coverage * 100, 2)),
     "semantic_score": None if sem_sim is None else float(round(sem_sim * 100, 2)),
-        },
+},
+
 
     }

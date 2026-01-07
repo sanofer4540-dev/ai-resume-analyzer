@@ -1,6 +1,7 @@
+
 console.log("RUNNING INDEX FILE:", import.meta.url);
 
-
+import fetch from "node-fetch";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -32,12 +33,22 @@ app.post("/api/match", async (req, res) => {
       });
     }
 
-    const aiRes = await axios.post("http://127.0.0.1:8000/match", {
+    const aiUrl = process.env.AI_SERVICE_URL;
+
+if (!aiUrl) {
+  return res.status(500).json({
+    error: "AI_SERVICE_URL is not set",
+    hint: "Set it in Render → Express service → Environment",
+  });
+}
+
+const aiRes = await axios.post(`${aiUrl}/match`, {
   resume_text,
   job_text,
 }, {
   headers: { "Content-Type": "application/json" }
 });
+
 
 // If AI ever returns null/empty, surface it clearly
 if (aiRes.data == null) {
